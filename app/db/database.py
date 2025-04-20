@@ -21,6 +21,7 @@ Base = declarative_base()
 try:
     from . import models  
     Base.metadata.create_all(bind=engine)
+
     print("Tables created successfully.")
 except Exception as e:
     print("Failed to create tables:", e)
