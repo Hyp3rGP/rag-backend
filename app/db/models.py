@@ -37,8 +37,6 @@ class Document(Base):
     docID = Column(Integer, primary_key=True, index=True)
     title = Column(Text)
     author = Column(Text)
-    keywords = Column(ARRAY(Text))
-    content = Column(Text)
     category = Column(Text)
     uploadDate = Column(TIMESTAMP)
 
