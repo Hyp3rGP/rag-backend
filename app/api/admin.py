@@ -76,6 +76,7 @@ def upload_document(
     title: str = "Untitled", 
     author: str = "Unknown", 
     category: str = "General",
+    documentPreview: str = "",  
     db: Session = Depends(get_db),
     current_admin: models.User = Depends(get_current_admin)
 ):
@@ -84,7 +85,6 @@ def upload_document(
     """
     os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
 
-    # Save the uploaded file
     file_path = os.path.join(UPLOAD_DIRECTORY, file.filename)
     with open(file_path, "wb") as f:
         f.write(file.file.read())
@@ -93,7 +93,8 @@ def upload_document(
         title=title,
         author=author,
         category=category,
-        uploadDate=datetime.utcnow()
+        uploadDate=datetime.utcnow(),
+        documentPreview=documentPreview 
     )
     db.add(new_document)
     db.commit()
@@ -115,4 +116,16 @@ def get_all_files(db: Session = Depends(get_db), current_admin: models.User = De
     Endpoint for an admin to retrieve metadata of all uploaded files.
     """
     documents = db.query(models.Document).all()
-    return {"documents": [{"docID": doc.docID, "title": doc.title, "author": doc.author, "category": doc.category, "uploadDate": doc.uploadDate} for doc in documents]}
+    return {
+        "documents": [
+            {
+                "docID": doc.docID, 
+                "title": doc.title, 
+                "author": doc.author, 
+                "category": doc.category, 
+                "uploadDate": doc.uploadDate,
+                "documentPreview": doc.documentPreview  
+            } 
+            for doc in documents
+        ]
+    }

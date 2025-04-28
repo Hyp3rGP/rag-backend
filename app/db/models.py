@@ -39,6 +39,7 @@ class Document(Base):
     author = Column(Text)
     category = Column(Text)
     uploadDate = Column(TIMESTAMP)
+    documentPreview = Column(Text)
 
 
 class RAGEEngine(Base):
